@@ -171,7 +171,7 @@ class AuthRepository {
               name: rows[0].name,
             },
             "Confidential",
-            { expiresIn: "12h" }
+            { expiresIn: "1h" }
           );
 
           const updatedUserData = {

@@ -199,16 +199,24 @@ class AuthController {
           .status(400)
           .json({ error: "Email dan password harus diisi" });
       } else {
-        const app = await AuthService.login(email, password);
-        console.log("Login response:", JSON.stringify(app));
-        if (app.code == 200) {
-          sendRespon(res, app.status, app.data, app.message, app.code);
-        } else {
-          sendRespon(res, app.status, null, app.message, app.code);
+        try {
+          const app = await AuthService.login(email, password);
+          console.log("Login response:", JSON.stringify(app));
+          if (app.code == 200) {
+            sendRespon(res, app.status, app.data, app.message, app.code);
+          } else {
+            sendRespon(res, app.status, null, app.message, app.code);
+          }
+        } catch (error) {
+          // Tambahkan log error ketika login gagal
+          console.error("Error during login:", error.message);
+          // Kirim respon error ke client
+          sendRespon(res, "ERROR", null, "Login gagal. Silakan coba lagi.", 500);
         }
       }
     },
-  ];  
+  ];
+  
 }
 
 module.exports = AuthController;
